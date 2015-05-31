@@ -1,7 +1,7 @@
 Origin,Objective,Why,Day
 Home,Work,To_Work,Monday
 Work,Chipotle,Lunch,Monday
-Chipotle,Work,To_Work,Monday
+Chipotle ,Work,To_Work,Monday
 Work,Home,Return_Home,Monday
 Home,Work,To_Work,Tuesday
 Work,Mcalisters,Lunch,Tuesday
