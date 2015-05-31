@@ -7,7 +7,9 @@ library(shiny)
 library(igraph)
 library(stringr)
 get_color <- function(index) {
-  color_list <- colors()
+  color_list <- colors()[grep("blue",colors())]
+  color_list[16] <- "aliceblue"
+  color_list[1] <- "deepskyblue"
   color_string <- color_list[index]
   return(color_string)
 }
@@ -22,11 +24,11 @@ shinyServer(function(input, output,session) {
     
     Life.Graph_input <- read.csv(inFile$datapath, header=input$header, sep=input$sep, 
                       quote=input$quote)
+    Life.Graph_input$Origin <- str_trim(Life.Graph_input$Origin)
+    Life.Graph_input$Objective <- str_trim(Life.Graph_input$Objective)
+    Life.Graph_input$Why <- str_trim(Life.Graph_input$Why)
+    Life.Graph_input$Day <- str_trim(Life.Graph_input$Day)    
     Life.Graph <- graph.data.frame(Life.Graph_input,directed=TRUE)
-    Life.Graph$Origin <- str_trim(Life.Graph$Origin)
-    Life.Graph$Objective <- str_trim(Life.Graph$Objective)
-    Life.Graph$Why <- str_trim(Life.Graph$Why)
-    Life.Graph$Day <- str_trim(Life.Graph$Day)
     why_list <- as.data.frame(unique(sort(Life.Graph_input$Why)))
     options <- c()
     for (index in why_list[,1]) { options = c(options,c(index,index))}
@@ -38,7 +40,7 @@ shinyServer(function(input, output,session) {
     updateSelectInput(session, 'Day', choices = options)    
     
     col_levels <- levels(Life.Graph_input$Origin)
-    V(Life.Graph)$size       <- degree(Life.Graph)*2
+    V(Life.Graph)$size       <- degree(Life.Graph)*1.8
     V(Life.Graph)$label.cex  <- 1
     V(Life.Graph)$label.dist <- 1
     V(Life.Graph)$color      <- get_color(which(col_levels %in% Life.Graph_input[V(Life.Graph),2]))
@@ -63,10 +65,10 @@ shinyServer(function(input, output,session) {
     Life.Graph$Why <- str_trim(Life.Graph$Why)
     Life.Graph$Day <- str_trim(Life.Graph$Day)
     V(Life.Graph)$size       <- degree(Life.Graph)*1.5
-    V(Life.Graph)$color      <- "green"
+    V(Life.Graph)$color      <- "skyblue"
     V(Life.Graph)$label.cex  <- 1
     V(Life.Graph)$label.dist <- 1
-    E(Life.Graph)$color      <- "black"
+    E(Life.Graph)$color      <- "purple"
     plot.igraph(Life.Graph,layout=layout.fruchterman.reingold(Life.Graph))
     
   })
@@ -87,10 +89,10 @@ shinyServer(function(input, output,session) {
     Life.Graph$Why <- str_trim(Life.Graph$Why)
     Life.Graph$Day <- str_trim(Life.Graph$Day)
     V(Life.Graph)$size       <- degree(Life.Graph)*1.2
-    V(Life.Graph)$color      <- "green"
+    V(Life.Graph)$color      <- "royalblue"
     V(Life.Graph)$label.cex  <- 1
     V(Life.Graph)$label.dist <- 1
-    E(Life.Graph)$color      <- "black"
+    E(Life.Graph)$color      <- "mediumpurple"
     plot.igraph(Life.Graph,layout=layout.fruchterman.reingold(Life.Graph))
     
   })
